@@ -10,12 +10,13 @@ def detect_circle(img, masked=None):
     #     masked = img
     if masked is None:
         masked = img
-    # masked = cv.medianBlur(masked, 5)
-    masked = cv.cvtColor(masked, cv.COLOR_BGR2GRAY)
+    # masked = cv.medianBlur(masked, 5)]
+    cv.imshow(f"masked{len(img[0])}", masked)
+    # masked = cv.cvtColor(masked, cv.COLOR_BGR2GRAY)
     rows = masked.shape[0]
 
     circles = cv.HoughCircles(masked, cv.HOUGH_GRADIENT, 1, rows / 8,
-                             param1=100, param2=5,
+                             param1=100, param2=1,
                              minRadius=1, maxRadius=4)
     if circles is None:
         return [(0, 0)]
