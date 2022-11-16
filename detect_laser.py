@@ -26,13 +26,16 @@ def mask_color(img, lower_bound, upper_bound):
 
 def detect_single_laser(img, coord0, coord1):
     cropped_frame = image_prep.crop_img(img, coord0, coord1)
-    mask = mask_color(cropped_frame, LOWER_RED, UPPER_RED)
-    laser_coords = circle_detection.detect_cirle(mask)
-    return laser_coords
+    # mask = mask_color(cropped_frame, LOWER_RED, UPPER_RED)
+    laser_cords = circle_detection.detect_circle(cropped_frame)[0]
+    # print(laser_cords)
+    # print(coord0)
+    # return coord0[0], coord0[1]
+    return laser_cords[0]+coord0[1], laser_cords[1]+coord0[0]
 
 
 def main():
-    cam = cv2.VideoCapture(1)
+    cam = cv2.VideoCapture(0)
     img_counter = 0
     while True:
         frame = image_producer.img_from_cam(cam)
@@ -43,7 +46,11 @@ def main():
         laser0 = detect_single_laser(frame, (50, 150), (100, 330))
         laser1 = detect_single_laser(frame, (100, 200), (200, 430))
 
-        print(distance_calculator.distance_in_meters(laser0, laser1))
+        frame = cv2.circle(frame, laser0, 1, (255, 0, 0), 3)
+        frame = cv2.circle(frame, laser1, 1, (255, 0, 0), 3)
+        cv2.imshow("detected", frame)
+
+        # print(distance_calculator.distance_in_meters(laser0, laser1))
 
         k = cv2.waitKey(1)
         if k % 256 == 27:

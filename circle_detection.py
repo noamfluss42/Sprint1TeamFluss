@@ -28,7 +28,10 @@ def detect_circle(img, masked=None):
             center = (i[0], i[1])
             result.append(center)
 
+    # return [(0,0)]
+    img = cv.circle(img, result[0], 1, (255, 0, 0), 3)
+    cv.imshow(f"after{len(img[0])}", img)
     return result
     #         cv.circle(img, center, 1, (255, 0, 0), 3)
-    # cv.imshow("after", img)
+
     # cv.waitKey(0)
