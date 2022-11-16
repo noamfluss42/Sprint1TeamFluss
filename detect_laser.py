@@ -2,6 +2,10 @@ import cv2
 import numpy as np
 import math
 
+import image_prep
+import image_producer
+import distance_calculator
+
 cam = cv2.VideoCapture(1)
 
 cv2.namedWindow("test")
@@ -13,37 +17,20 @@ LOWER_RED = np.array([0, 0, 50])
 UPPER_RED = np.array([30, 5, 255])
 
 
-def img_from_cam():
-    ret, cam_frame = cam.read()
-    if not ret:
-        print("failed to grab frame")
-        return None
-    return cam_frame
-
-
-def img_from_file():
-    return cv2.imread("5 meters/opencv_frame_4.png")
-
-
 def mask_color(img, lower_bound, upper_bound):
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     masked_image = cv2.inRange(hsv, lower_bound, upper_bound)
     return masked_image
 
 
-
-
 while True:
-    frame = img_from_cam()
+    frame = image_producer.img_from_cam(cam)
     if frame is None:
         break
 
     cv2.imshow("test", frame)
-    cropped_frame = frame[50:100, 150:330]
+    cropped_frame = image_prep.crop_img(frame, (50, 150), (100, 330))
     cv2.imshow("cropped", cropped_frame)
-
-
-
 
     # Threshold the HSV image to get only correct colors
     mask = mask_color(cropped_frame, LOWER_RED, UPPER_RED)
