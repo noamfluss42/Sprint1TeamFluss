@@ -17,6 +17,11 @@ import circle_detection
 LOWER_RED = np.array([0, 0, 50])
 UPPER_RED = np.array([30, 5, 255])
 
+CROP1_P1 = (50, 50)
+CROP1_P2 = (300, 350)
+
+CROP2_P1 = (400, 150)
+CROP2_P2 = (500, 550)
 
 def mask_color(img, lower_bound, upper_bound):
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -24,14 +29,15 @@ def mask_color(img, lower_bound, upper_bound):
     return masked_image
 
 
-def detect_single_laser(img, coord0, coord1):
+def detect_single_laser(img, coord0, coord1): # (x1, y1), (x2, y2)
     cropped_frame = image_prep.crop_img(img, coord0, coord1)
     # mask = mask_color(cropped_frame, LOWER_RED, UPPER_RED)
     laser_cords = circle_detection.detect_circle(cropped_frame)[0]
     # print(laser_cords)
     # print(coord0)
-    # return coord0[0], coord0[1]
-    return laser_cords[0]+coord0[1], laser_cords[1]+coord0[0]
+
+    # return coord1[0], coord1[1]
+    return laser_cords[1]+coord0[0], laser_cords[0]+coord0[1]
 
 
 def main():
@@ -42,12 +48,14 @@ def main():
         if frame is None:
             break
 
-        cv2.imshow("test", frame)
-        laser0 = detect_single_laser(frame, (50, 150), (100, 330))
-        laser1 = detect_single_laser(frame, (100, 200), (200, 430))
+        # cv2.imshow("test", frame)
+        laser0 = detect_single_laser(frame, CROP1_P1, CROP1_P2)
+        laser1 = detect_single_laser(frame, CROP2_P1, CROP2_P2)
 
-        frame = cv2.circle(frame, laser0, 1, (255, 0, 0), 3)
-        frame = cv2.circle(frame, laser1, 1, (255, 0, 0), 3)
+        frame = cv2.rectangle(frame, CROP1_P1, CROP1_P2, (255, 0, 0), 1)
+        frame = cv2.rectangle(frame, CROP2_P1, CROP2_P2, (0, 255, 0), 1)
+        frame = cv2.circle(frame, laser0, 1, (0, 0, 255), 3)
+        frame = cv2.circle(frame, laser1, 1, (0, 255, 255), 3)
         cv2.imshow("detected", frame)
 
         # print(distance_calculator.distance_in_meters(laser0, laser1))
