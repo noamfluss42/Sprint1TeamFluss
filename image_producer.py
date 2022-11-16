@@ -10,4 +10,4 @@ def img_from_cam(cam):
 
 
 def img_from_file():
-    return cv2.imread("5 meters/opencv_frame_4.png")
+    return cv2.imread("images and filters/5 meters new/opencv_frame_5.png")
