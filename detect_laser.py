@@ -14,7 +14,7 @@ import circle_detection
 
 
 # define range of red color in HSV
-LOWER_RED = np.array([0, 0, 250])
+LOWER_RED = np.array([0, 0, 253])
 UPPER_RED = np.array([1, 1, 255])
 
 CROP1_P1 = (250, 75)
@@ -55,12 +55,12 @@ def main():
 
         cv2.imshow("test", frame)
         # cv2.imshow("test", frame)
-        laser0 = detect_single_laser(frame, CROP1_P1, CROP1_P2)
+        # laser0 = detect_single_laser(frame, CROP1_P1, CROP1_P2)
         laser1 = detect_single_laser(frame, CROP2_P1, CROP2_P2)
 
         frame = cv2.rectangle(frame, CROP1_P1, CROP1_P2, (255, 0, 0), 1)
         frame = cv2.rectangle(frame, CROP2_P1, CROP2_P2, (0, 255, 0), 1)
-        frame = cv2.circle(frame, laser0, 1, (0, 0, 255), 3)
+        # frame = cv2.circle(frame, laser0, 1, (0, 0, 255), 3)
         frame = cv2.circle(frame, laser1, 1, (0, 255, 255), 3)
         cv2.imshow("detected", frame)
 
@@ -77,7 +77,7 @@ def main():
             cv2.imwrite(img_name, frame)
             # cv2.imwrite(f"cropped_{img_name}", cropped_frame)
             # cv2.imwrite(f"masked_{img_name}", mask)
-            out.append([dist, laser0, laser1])
+            out.append([dist, laser1])
             dist += 50
             print(out)
             print("{} written!".format(img_name))
