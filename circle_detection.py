@@ -11,7 +11,7 @@ def detect_circle(img, masked=None):
     if masked is None:
         masked = img
     # masked = cv.medianBlur(masked, 5)]
-    cv.imshow(f"masked{len(img[0])}", masked)
+    # cv.imshow(f"masked{len(img[0])}", masked)
     # masked = cv.cvtColor(masked, cv.COLOR_BGR2GRAY)
     rows = masked.shape[0]
 

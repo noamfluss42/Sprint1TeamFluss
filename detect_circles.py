@@ -37,7 +37,7 @@ def detect_circles(img, masked=None):
 
 def img_difference(img1, img2):
     diff = cv.subtract(img1, img2)
-    cv.imshow("diff", diff)
+    #cv.imshow("diff", diff)
     cv.waitKey(0)
 
 
