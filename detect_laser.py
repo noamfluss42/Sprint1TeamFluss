@@ -37,13 +37,25 @@ def detect_single_laser(img, coord0, coord1): # (x1, y1), (x2, y2)
     # cv2.imshow(f"cropped{coord0}", cropped_frame)
     mask = mask_color(cropped_frame, LOWER_RED, UPPER_RED)
     #cv2.imshow(f"masked{coord0}", mask)
-    laser_cords = circle_detection.detect_circle(cropped_frame, mask)[0]
+    # laser_cords = circle_detection.detect_circle(cropped_frame, mask)[0]
+    laser_cords = filter_circle_list(circle_detection.detect_circle(cropped_frame, mask), coord0)
     # print(laser_cords)
     # print(coord0)
 
     # return coord1[0], coord1[1]
     return laser_cords[0]+coord0[0], laser_cords[1]+coord0[1]
 
+
+def filter_circle_list(lst, coord0):
+    # print("\n\nstart filter")
+    for tup in lst:
+        distance = (distance_calculator.distance_in_meters((tup[0]+coord0[0], tup[1]+coord0[1])))
+        # print("dis",distance)
+        if 4 <= distance <= 18:
+            return tup
+
+    # print("fashla")
+    return 0, 0
 
 def main():
     i = 1
@@ -114,3 +126,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    input()
