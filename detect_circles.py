@@ -1,8 +1,9 @@
+import sys
 import cv2 as cv
 import numpy as np
 
 
-def detect_circle(img, masked=None):
+def detect_circles(img, masked=None):
     # cv.imshow("before", img)
     # if masked is not None:
     #     cv.imshow("masked", masked)
@@ -32,3 +33,26 @@ def detect_circle(img, masked=None):
     #         cv.circle(img, center, 1, (255, 0, 0), 3)
     # cv.imshow("after", img)
     # cv.waitKey(0)
+
+
+def img_difference(img1, img2):
+    diff = cv.subtract(img1, img2)
+    cv.imshow("diff", diff)
+    cv.waitKey(0)
+
+
+def get_images(i, m):
+    img = cv.imread(f'images and filters/{m} meters new/opencv_frame_{i+1}.png')
+    cropped = cv.imread(f'images and filters/{m} meters new/cropped_opencv_frame_{i+1}.png')
+    filtered = cv.imread(f'images and filters/{m} meters new/masked_opencv_frame_{i+1}.png')
+    return [img, cropped, filtered]
+
+
+if __name__ == '__main__':
+    for i in range(20):
+        images = get_images(i, 5)
+        print(detect_circles(images[1]))
+
+
+
+
